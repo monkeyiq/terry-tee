@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Terry "Tee" The Three Wheeled T-bot</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap-slider/css/bootstrap-slider.css" rel="stylesheet">
+    <link href="cover.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Terry "T": 3 Wheels there be!</h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#">Home</a></li>
+<!--                <li><a href="#">Features</a></li>
+                <li><a href="#">Contact</a></li>
+-->
+              </ul>
+            </div>
+          </div>
+
+	  
+
+          <div class="inner cover">
+	    <div class="btn-group btn-group-lg">
+	      <button id="stop" type="button" class="btn btn-default btn-lg">
+		<span class="glyphicon glyphicon-stop"></span>&nbsp;Stop Terry!</button>
+	    </div>
+	    <p class="lead">This is an emergency stop function.</p>
+          </div>
+
+          <div class="inner cover">
+
+	    <div class="row">
+	      <div class="col-md-1"><p class="lead">Speed</p></div>
+	      <div class="col-md-8"><input id="speed" data-slider-id='speedSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-md-1"><p class="lead">Heading</p></div>
+	      <div class="col-md-8"><input id="heading" data-slider-id='headingSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="50"/></div>
+	    </div>
+          </div>
+
+          <div class="inner cover">
+          </div>
+
+          <div class="inner cover">
+	      <div class="btn-group">
+		<button id="rotateleft" type="button" class="btn btn-default btn-lg" >
+		  <span class="glyphicon glyphicon-hand-left"></span>&nbsp;Rot&nbsp;Left</button>
+		<button id="straightahead" type="button" class="btn btn-default btn-lg" >
+		  <span class="glyphicon glyphicon-arrow-up"></span>&nbsp;Straight&nbsp;ahead</button>
+		<button id="rotateright" type="button" class="btn btn-default btn-lg" >
+		  <span class="glyphicon glyphicon-hand-right"></span>&nbsp;Rot&nbsp;Right</button>
+	      </div>
+          </div>
+<!--
+          <div class="inner cover">
+            <h1 class="cover-heading">Terry T: Control Panel.</h1>
+            <p class="lead">This application allowsy ou to control Terry T. In the future he might obtain more abilities and superpowers and those will be at your disposal right here.</p>
+          </div>
+-->
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Using the Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--    <script src="jquery-2.1.0.min.js"></script> -->
+    <script src="modernizr.js"></script>
+    <script src="jquery-2.1.0.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap-slider/js/bootstrap-slider.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+<!--    <script src="../../assets/js/docs.min.js"></script> -->
+    <script>
+
+var socket;
+
+$(document).ready(function(){
+
+	// creating a new websocket
+        socket = io.connect('http://' + location.host + ":8888" );
+	// on every message recived we print the new datas inside the #container div
+	socket.on('notification', function (data) {
+	        alert('have data from server');
+	});
+});
+
+$('#speed').slider({
+});
+$("#speed").on('slide', function(slideEvt) {
+//	$("#ex6SliderVal").text(slideEvt.value);
+    socket.emit('speed', {
+        value: slideEvt.value[0],
+        '/end': 'of-message'
+    });
+});
+var heading = $('#heading').slider({
+	formater: function(value) {
+		return 'Current value: ' + value;
+	}
+});
+$("#heading").on('slide', function(slideEvt) {
+//	$("#ex6SliderVal").text(slideEvt.value);
+    socket.emit('heading', {
+        value: slideEvt.value[0],
+        '/end': 'of-message'
+    });
+});
+
+$('#straightahead').on('click', function (e) {
+     $('#heading').data('slider').setValue(50);
+})
+
+$('#rotateleft').on('click', function (e) {
+     $('#heading').data('slider').setValue(0);
+     $('#speed').data('slider').setValue(70);
+     setTimeout(function() {
+        $('#speed').data('slider').setValue(0);
+        $('#heading').data('slider').setValue(50);
+     }, 2000);
+
+})
+$('#rotateright').on('click', function (e) {
+     $('#heading').data('slider').setValue(100);
+     $('#speed').data('slider').setValue(70);
+     setTimeout(function() {
+        $('#speed').data('slider').setValue(0);
+        $('#heading').data('slider').setValue(50);
+     }, 2000);
+
+})
+$('#stop').on('click', function (e) {
+     socket.emit('message', 'stop');
+     socket.emit('stop', 1);
+     $('#speed').data('slider').setValue(0);
+     $('#heading').data('slider').setValue(50);
+     alert('Emergency Stop Performed');
+})
+    </script>
+
+  </body>
+</html>
