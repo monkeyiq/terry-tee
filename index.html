@@ -129,6 +129,29 @@ $('#straightahead').on('click', function (e) {
 })
 
 $('#rotateleft').on('click', function (e) {
+
+    socket.emit('turnLeft', {
+        value: 1,
+        '/end': 'of-message'
+    });
+    setTimeout(function() {
+        $('#speed').data('slider').setValue(0);
+        $('#heading').data('slider').setValue(50);
+    }, 2000);
+})
+$('#rotateright').on('click', function (e) {
+    socket.emit('turnRight', {
+        value: 1,
+        '/end': 'of-message'
+    });
+    setTimeout(function() {
+        $('#speed').data('slider').setValue(0);
+        $('#heading').data('slider').setValue(50);
+    }, 2000);
+})
+
+$('#rotateleftold').on('click', function (e) {
+
      $('#heading').data('slider').setValue(0);
      $('#speed').data('slider').setValue(70);
      setTimeout(function() {
@@ -137,7 +160,8 @@ $('#rotateleft').on('click', function (e) {
      }, 2000);
 
 })
-$('#rotateright').on('click', function (e) {
+
+$('#rotaterightold').on('click', function (e) {
      $('#heading').data('slider').setValue(100);
      $('#speed').data('slider').setValue(70);
      setTimeout(function() {

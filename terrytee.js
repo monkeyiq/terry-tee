@@ -1,15 +1,41 @@
 var b = require('bonescript');
 
-function TerryTee( leftPWMpin, rightPWMpin, leftReduction, rightReduction )
+var wheel = {
+    LEFT : 0,
+    RIGHT : 1
+};
+
+function TerryTee( leftPWMpin, rightPWMpin, leftReduction, rightReduction,
+		   leftwheelA, leftwheelB, rightwheelA, rightwheelB )
 {
     TerryTee.running = 1;
     TerryTee.leftPWMpin = leftPWMpin;
     TerryTee.rightPWMpin = rightPWMpin;
     TerryTee.leftReduction = leftReduction;
     TerryTee.rightReduction = rightReduction;
+    TerryTee.wheels = new Array();
+    TerryTee.wheels[ wheel.LEFT ]  = { 'hbridgeA': leftwheelA,  'hbridgeB': leftwheelB };
+    TerryTee.wheels[ wheel.RIGHT ] = { 'hbridgeA': rightwheelA, 'hbridgeB': rightwheelB };
+    b.pinMode( leftwheelA,  b.OUTPUT);
+    b.pinMode( leftwheelB,  b.OUTPUT);
+    b.pinMode( rightwheelA, b.OUTPUT);
+    b.pinMode( rightwheelB, b.OUTPUT);
     TerryTee.speed = 0;
     TerryTee.heading = 50;
     console.log("TerryTee()");
+    this.setWheelDirection( wheel.LEFT,  1 );
+    this.setWheelDirection( wheel.RIGHT, 1 );
+}
+
+TerryTee.prototype.setWheelDirection = function ( wheel, forward ) 
+{
+    if( forward ) {
+	b.digitalWrite(TerryTee.wheels[ wheel ].hbridgeA, b.HIGH );
+	b.digitalWrite(TerryTee.wheels[ wheel ].hbridgeB, b.LOW  );
+    } else {
+	b.digitalWrite(TerryTee.wheels[ wheel ].hbridgeA, b.LOW  );
+	b.digitalWrite(TerryTee.wheels[ wheel ].hbridgeB, b.HIGH );
+    }
 }
 
 TerryTee.prototype.setSpeed = function ( v ) 
@@ -85,6 +111,45 @@ TerryTee.prototype.forceStop = function ()
 	TerryTee.running = 1;
 	console.log('Terry is back in the mix!');
     }, 30000);
+}
+
+
+function resetHBridge(x) 
+{
+    return function() {
+	console.log("turn left timeout function");
+	x.setWheelDirection( wheel.LEFT,  1 );
+	x.setWheelDirection( wheel.RIGHT, 1 );
+	x.setHeading( 50 );
+	x.setSpeed( 0 );
+	console.log("back to normal H-Bridge");
+    };
+}
+
+TerryTee.prototype.turnLeft = function () 
+{
+    this.setHeading( 50 );
+    this.setSpeed( 0 );
+
+    this.setWheelDirection( wheel.LEFT,  0 );
+    this.setWheelDirection( wheel.RIGHT, 1 );
+
+    this.setSpeed( 80 );
+
+    setTimeout( resetHBridge(this), 2000 );
+}
+
+TerryTee.prototype.turnRight = function () 
+{
+    this.setHeading( 50 );
+    this.setSpeed( 0 );
+
+    this.setWheelDirection( wheel.LEFT,  1 );
+    this.setWheelDirection( wheel.RIGHT, 0 );
+
+    this.setSpeed( 80 );
+
+    setTimeout( resetHBridge(this), 2000 );
 }
 
 

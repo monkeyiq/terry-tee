@@ -4,25 +4,16 @@ var TerryTee = require('./terrytee.js');
 
 
 //var terry = new TerryTee('P9_16', 'P9_14', 1.0, 1.0 );
-var terry = new TerryTee('P8_46', 'P8_45', 0.958, 1.0 );
+var terry = new TerryTee('P8_46', 'P8_45', 0.958, 1.0,
+			 'P8_37', 'P8_39',
+			 'P8_38', 'P8_40' 
+			);
 
 terry.setSpeed( 0 );
 terry.setHeading( 50 );
 
-b.pinMode     ('P8_37', b.OUTPUT);
-b.pinMode     ('P8_38', b.OUTPUT);
-b.pinMode     ('P8_39', b.OUTPUT);
-b.pinMode     ('P8_40', b.OUTPUT);
-b.digitalWrite('P8_37', b.HIGH);
-b.digitalWrite('P8_38', b.HIGH);
-b.digitalWrite('P8_39', b.LOW);
-b.digitalWrite('P8_40', b.LOW);
 
 function printJSON(x) { console.log(JSON.stringify(x)); }
-//b.analogWrite('P9_16', 0.7, 2000, printJSON);
-//b.analogWrite('P9_14', 0.7, 2000, printJSON);
-
-
 
 
 io.sockets.on('connection', function (socket) {
@@ -63,5 +54,11 @@ console.log("have connection");
 	  return;
 
       terry.setHeading( v.value );
+  });
+  socket.on('turnLeft', function (v) {
+      terry.turnLeft();
+  });
+  socket.on('turnRight', function (v) {
+      terry.turnRight();
   });
 });
