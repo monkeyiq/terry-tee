@@ -4,19 +4,19 @@ var TerryTee = require('./terrytee.js');
 
 
 //var terry = new TerryTee('P9_16', 'P9_14', 1.0, 1.0 );
-var terry = new TerryTee('P8_46', 'P8_45', 1.0, 0.97 );
+var terry = new TerryTee('P8_46', 'P8_45', 0.958, 1.0 );
 
 terry.setSpeed( 0 );
 terry.setHeading( 50 );
 
-b.pinMode     ('P8_41', b.OUTPUT);
-b.pinMode     ('P8_42', b.OUTPUT);
-b.pinMode     ('P8_43', b.OUTPUT);
-b.pinMode     ('P8_44', b.OUTPUT);
-b.digitalWrite('P8_41', b.HIGH);
-b.digitalWrite('P8_42', b.HIGH);
-b.digitalWrite('P8_43', b.LOW);
-b.digitalWrite('P8_44', b.LOW);
+b.pinMode     ('P8_37', b.OUTPUT);
+b.pinMode     ('P8_38', b.OUTPUT);
+b.pinMode     ('P8_39', b.OUTPUT);
+b.pinMode     ('P8_40', b.OUTPUT);
+b.digitalWrite('P8_37', b.HIGH);
+b.digitalWrite('P8_38', b.HIGH);
+b.digitalWrite('P8_39', b.LOW);
+b.digitalWrite('P8_40', b.LOW);
 
 function printJSON(x) { console.log(JSON.stringify(x)); }
 //b.analogWrite('P9_16', 0.7, 2000, printJSON);

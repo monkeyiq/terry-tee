@@ -30,9 +30,6 @@
               <h3 class="masthead-brand">Terry "T": 3 Wheels there be!</h3>
               <ul class="nav masthead-nav">
                 <li class="active"><a href="#">Home</a></li>
-<!--                <li><a href="#">Features</a></li>
-                <li><a href="#">Contact</a></li>
--->
               </ul>
             </div>
           </div>
@@ -72,12 +69,6 @@
 		  <span class="glyphicon glyphicon-hand-right"></span>&nbsp;Rot&nbsp;Right</button>
 	      </div>
           </div>
-<!--
-          <div class="inner cover">
-            <h1 class="cover-heading">Terry T: Control Panel.</h1>
-            <p class="lead">This application allowsy ou to control Terry T. In the future he might obtain more abilities and superpowers and those will be at your disposal right here.</p>
-          </div>
--->
 
           <div class="mastfoot">
             <div class="inner">
@@ -94,13 +85,11 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-<!--    <script src="jquery-2.1.0.min.js"></script> -->
     <script src="modernizr.js"></script>
     <script src="jquery-2.1.0.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-<!--    <script src="../../assets/js/docs.min.js"></script> -->
     <script>
 
 var socket;
@@ -118,7 +107,6 @@ $(document).ready(function(){
 $('#speed').slider({
 });
 $("#speed").on('slide', function(slideEvt) {
-//	$("#ex6SliderVal").text(slideEvt.value);
     socket.emit('speed', {
         value: slideEvt.value[0],
         '/end': 'of-message'
@@ -130,7 +118,6 @@ var heading = $('#heading').slider({
 	}
 });
 $("#heading").on('slide', function(slideEvt) {
-//	$("#ex6SliderVal").text(slideEvt.value);
     socket.emit('heading', {
         value: slideEvt.value[0],
         '/end': 'of-message'
